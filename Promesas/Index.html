@@ -4,29 +4,41 @@
         sequence:
         <img src="Images/Save_Person.png" style="width:100%" />
         Code:
-        <img src="Images/Save_Person_Code.png" style="width:100%"  />
+        <img src="Images/Save_Person_Code.png" style="width:100%" />
         <br />
     </div>
     <div style="float: left;width:33%">
         using fetch (Get Person) : <input type="button" onclick="getPerson();" value="fetch" />
         sequence:
-        <img src="Images/Get Person.png" style="width:100%"  />
+        <img src="Images/Get Person.png" style="width:100%" />
         Code:
-        <img src="Images/GetPerson_code.png" style="width:100%"  />
+        <img src="Images/GetPerson_code.png" style="width:100%" />
         <br />
     </div>
     <div style="float: left;width:33%">
         using promise.all (calling first and second button) : <input type="button" onclick="updatePerson();" value="promise all" />
         sequence:
-        <img src="Images/Update Person.png" style="width:100%"  />
+        <img src="Images/Update Person.png" style="width:100%" />
         Code:
-        <img src="Images/Update PersonCode.png" style="width:100%"  />
+        <img src="Images/Update PersonCode.png" style="width:100%" />
+        <br />
+    </div>
+</div>
+<div style="width:100%">
+    <div style="float: left;width:100%">
+        calling many promises : <input type="button" onclick="promises();" value="all" />
+        sequence:
+        <!-- <img src="Images/Save_Person.png" style="width:100%" />
+        Code:
+        <img src="Images/Save_Person_Code.png" style="width:100%" />
+        -->
         <br />
     </div>
 </div>
 
 
 <script type="text/javascript">
+
     function savePerson() {
         return new Promise((resolve, reject) => {
             console.log('savePerson - entro a la promesa de Save person');
@@ -64,4 +76,37 @@
                 return miBlob;
             });
     }
+
+    function promises() {
+        console.log('all');
+        return Promise.all([sendImage(), savePerson()]).then(values => {
+            console.log('all - promise.all');
+            return values;
+        })
+            .then(() => {
+                console.log('finish all');
+            })
+            .catch(() => {
+                console.log('catch');
+            });
+    }
+
+    function SavePicture() {
+        console.log('SavePicture')
+        var TempJson = new Array();
+        return Promise.all([savePerson(), getPerson()]).then(values => {
+            console.log('Promise.all savePerson and getPerson')
+            console.log(values); // [finish savePerson, Response]
+        });
+    }
+
+    function sendImage() {
+        console.log('sendImage')
+        return SavePicture().then(resultData => {
+            console.log('sendImage - after SavePicture')
+            return getPerson();
+        });
+    }
+
+
 </script>
